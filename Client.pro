@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,13 +11,15 @@ SOURCES += \
         main.cpp \
         MainWindow.cpp \
         LoginForm.cpp \
-        Utilities.cpp
+        Utilities.cpp \
+    Protocol.cpp
 
 HEADERS += \
         MainWindow.h \
         LoginForm.h \
         Utilities.h \
-    Types.h
+    Types.h \
+    Protocol.h
 
 FORMS += \
         MainWindow.ui \

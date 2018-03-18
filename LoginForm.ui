@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>643</width>
-    <height>415</height>
+    <width>650</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QLineEdit" name="LoginEdit">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>150</y>
+     <x>240</x>
+     <y>170</y>
      <width>171</width>
      <height>20</height>
     </rect>
@@ -26,8 +26,8 @@
   <widget class="QLineEdit" name="PasswordEdit">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>210</y>
+     <x>240</x>
+     <y>220</y>
      <width>171</width>
      <height>20</height>
     </rect>
@@ -36,8 +36,8 @@
   <widget class="QPushButton" name="LoginButton">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>240</y>
+     <x>290</x>
+     <y>260</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -49,27 +49,27 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>130</y>
+     <x>240</x>
+     <y>150</y>
      <width>47</width>
      <height>13</height>
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Логин</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>180</y>
+     <x>240</x>
+     <y>200</y>
      <width>47</width>
      <height>13</height>
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Пароль</string>
    </property>
   </widget>
  </widget>

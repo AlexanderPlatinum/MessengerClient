@@ -5,29 +5,34 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
 
+    this->protocol = new Protocol();
     this->InitializeScenes();
+
+    setWindowTitle( "Messanger Client" );
 }
 
 void MainWindow::InitializeScenes()
 {
+
+    this->loginForm = new LoginForm();
+    connect( this->loginForm, &LoginForm::isAuthorize, this, &MainWindow::show );
+
     currentScene = SceneTypes::LoginScene;
     RenderCurrentScene();
 }
 
 void MainWindow::RenderCurrentScene()
 {
-    QWidget *widget;
+    this->close();
 
     switch ( currentScene )
     {
         case SceneTypes::LoginScene:
         {
-            widget = new LoginForm();
+            this->loginForm->show();
         }
         break;
     }
-
-    this->setCentralWidget( widget );
 }
 
 MainWindow::~MainWindow()

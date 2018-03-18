@@ -6,6 +6,8 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
     ui->setupUi(this);
 
     connect( ui->LoginButton, SIGNAL(clicked(bool)), this, SLOT(HandleLoginButton()) );
+
+    setWindowTitle( "Messanger Client | Вход" );
 }
 
 void LoginForm::HandleLoginButton()
@@ -26,6 +28,12 @@ void LoginForm::HandleLoginButton()
     {
         Utilities::ShowError( "Введите пароль!" );
         return;
+    }
+
+    if ( password == "admin" && login == "admin" )
+    {
+        emit this->isAuthorize();
+        this->close();
     }
 }
 

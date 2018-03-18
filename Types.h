@@ -22,11 +22,6 @@ enum Reply
     Error = 1,
     MessagesList,
     GetTimeline,
-    GetFriends
+    GetFriendsReply
 };
 
-struct SessionInfo
-{
-    int Id;
-    QString Name;
-};

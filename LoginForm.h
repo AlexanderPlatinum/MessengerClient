@@ -20,6 +20,9 @@ public:
 private:
     Ui::LoginForm *ui;
 
+signals:
+    void isAuthorize();
+
 private slots:
     void HandleLoginButton ();
 
