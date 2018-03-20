@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     this->InitializeScenes();
 
     setWindowTitle( "Messanger Client" );
+
+    connect( ui->SendButton, SIGNAL(clicked()), this, SLOT(SendMessageBtn()) );
 }
 
 void MainWindow::InitializeScenes()
@@ -19,6 +21,7 @@ void MainWindow::InitializeScenes()
 
     currentScene = SceneTypes::LoginScene;
     RenderCurrentScene();
+    RenderConversationList();
 }
 
 void MainWindow::RenderCurrentScene()
@@ -33,6 +36,26 @@ void MainWindow::RenderCurrentScene()
         }
         break;
     }
+}
+
+void MainWindow::SendMessageBtn()
+{
+    QString message;
+    message = ui->MessageEdit->text();
+
+    if ( message.size() == 0 )
+    {
+        return;
+    }
+
+    ui->MessageEdit->setText( "" );
+}
+
+void MainWindow::RenderConversationList ()
+{
+    QList<QString> conversations;
+    conversations << "Vasiliy Pupkin" << "Ivan Petrov";
+    ui->ConversationList->addItems( conversations );
 }
 
 MainWindow::~MainWindow()

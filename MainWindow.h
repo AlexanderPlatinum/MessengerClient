@@ -25,6 +25,10 @@ private:
 
     void InitializeScenes();
     void RenderCurrentScene();
+    void RenderConversationList();
+
+private slots:
+     void SendMessageBtn ();
 
 public:
 
