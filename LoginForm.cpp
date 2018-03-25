@@ -12,6 +12,10 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
 
 void LoginForm::HandleLoginButton()
 {
+    emit this->isAuthorize();
+    this->close();
+    return;
+
     QString login;
     QString password;
 
