@@ -54,9 +54,22 @@ void MainWindow::InitializeScenes()
 void MainWindow::ReadyToLogin()
 {
     this->show();
-    this->socket->write( QString("{ \"command\": \"GET_CONVERSATIONS\", \"params\" : { \"token\" : \"QRJATYDIMOFUGCLQURCLQECDRHVQSUWBVNTMRYKTDLWIX\", \"seqId\" : \"" + QString::number( this->seqId ) +  "\" } }" ).toUtf8() );
+
+    this->token = "QRJATYDIMOFUGCLQURCLQECDRHVQSUWBVNTMRYKTDLWIX";
+
+    QJsonObject object;
+
+    object.insert( "token", this->token );
+    object.insert( "seqId", QString::number( this->seqId ) );
+
+    QByteArray query = Utilities::MakeQuery( "GET_CONVERSATIONS", object );
+
     this->toRender[seqId] = "RENDER_CONVERSATION_LIST";
     seqId++;
+
+    qDebug() << query;
+
+    this->socket->write( query );
 }
 
 void MainWindow::RenderConversationList( QJsonArray array )
@@ -70,7 +83,7 @@ void MainWindow::RenderConversationList( QJsonArray array )
     {
         QJsonObject obj = value.toObject();
 
-        conversations << obj["u_two_first_name"].toString() + obj["u_two_last_name"].toString();
+        conversations << obj["u_two_first_name"].toString() + " " + obj["u_two_last_name"].toString();
         this->positionListToConv[index] = obj["conversation_id"].toString();
         index++;
     }
@@ -78,8 +91,21 @@ void MainWindow::RenderConversationList( QJsonArray array )
     ui->ConversationList->addItems( conversations );
 }
 
+void MainWindow::RenderMessagesList( QJsonArray array )
+{
+    foreach ( const QJsonValue &value, array )
+    {
+        QJsonObject obj = value.toObject();
+
+        QString htmlText = "<p><b>" + obj["author_id"].toString() + ": </b><span>" + obj["msg_text"].toString() + "</span></p>";
+
+        ui->textBrowser->append( htmlText );
+    }
+}
+
 void MainWindow::ExecuteResponse( QByteArray data )
 {
+
     QJsonDocument document = QJsonDocument::fromJson( data );
     QJsonObject obj = document.object();
 
@@ -96,25 +122,61 @@ void MainWindow::ExecuteResponse( QByteArray data )
        this->RenderConversationList( obj["response"].toArray() );
     }
 
+    if ( executionFunction == "RENDER_MESSAGES" )
+    {
+        this->RenderMessagesList( obj["response"].toArray() );
+    }
+
 }
 
 void MainWindow::SendMessageBtn()
 {
     QString message;
+
     message = ui->MessageEdit->text();
+    ui->MessageEdit->setText( "" );
 
     if ( message.size() == 0 )
     {
         return;
     }
 
-    ui->MessageEdit->setText( "" );
+    QJsonObject object;
+
+    object.insert( "token", this->token );
+    object.insert( "conversation_id", QString::number( this->currentConversationId ) );
+    object.insert( "message", message );
+    object.insert( "seqId", QString::number( this->seqId ) );
+
+    QByteArray data = Utilities::MakeQuery( "SEND_MESSAGE", object );
+
+    this->socket->write( data );
+    this->seqId++;
+
+    QString htmlText = "<p align=\"right\"><b>My: </b><span>" + message + "</span></p>";
+    ui->textBrowser->append( htmlText );
+
 }
 
 void MainWindow::SelectConversation()
 {
     int index = this->ui->ConversationList->currentRow();
-    Utilities::ShowError( this->positionListToConv[index] );
+    this->currentConversationId = this->positionListToConv[index].toInt();
+
+    QJsonObject object;
+
+    object.insert( "token", this->token );
+    object.insert( "conversation_id", QString::number( this->currentConversationId ) );
+    object.insert( "seqId", QString::number( this->seqId ) );
+
+    this->toRender[this->seqId] = "RENDER_MESSAGES";
+    this->seqId++;
+
+    QByteArray data = Utilities::MakeQuery( "GET_MESSAGES", object );
+
+    this->socket->write( data );
+
+    ui->textBrowser->clear();
 }
 
 MainWindow::~MainWindow()

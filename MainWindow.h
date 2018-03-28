@@ -25,6 +25,9 @@ private:
     std::map<int, QString> toRender;
     std::map<int, QString> positionListToConv;
 
+    QString token;
+    int currentConversationId = 0;
+
     Ui::MainWindow *ui;
     LoginForm *loginForm;
     QTcpSocket *socket;
@@ -36,6 +39,7 @@ private:
     void ExecuteResponse( QByteArray buffer );
 
     void RenderConversationList( QJsonArray array );
+    void RenderMessagesList( QJsonArray array );
 
 private slots:
      void SendMessageBtn ();
