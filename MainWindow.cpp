@@ -48,14 +48,20 @@ void MainWindow::InitializeScenes()
 {
     this->loginForm = new LoginForm();
 
-    connect( this->loginForm, &LoginForm::isAuthorize, this, &MainWindow::ReadyToLogin );
+    connect( this->loginForm, SIGNAL(isAuthorize(QString, QString)), this, SLOT( ReadyToLogin(QString, QString) ) );
 }
 
-void MainWindow::ReadyToLogin()
+void MainWindow::ReciveToken( QString token )
 {
-    this->show();
+    if ( token.size() == 0 )
+    {
+        Utilities::ShowError( "You are entered wrong password or email!" );
+        this->loginForm->show();
+        this->close();
+        return;
+    }
 
-    this->token = "QRJATYDIMOFUGCLQURCLQECDRHVQSUWBVNTMRYKTDLWIX";
+    this->token = token;
 
     QJsonObject object;
 
@@ -67,9 +73,26 @@ void MainWindow::ReadyToLogin()
     this->toRender[seqId] = "RENDER_CONVERSATION_LIST";
     seqId++;
 
-    qDebug() << query;
-
     this->socket->write( query );
+}
+
+void MainWindow::ReadyToLogin( QString email, QString password )
+{
+
+    this->show();
+
+    QJsonObject object;
+
+    object.insert( "email", email );
+    object.insert( "password", password );
+    object.insert( "seqId", QString::number( this->seqId ) );
+
+    QByteArray data = Utilities::MakeQuery( "LOGIN_USER", object );
+    this->socket->write( data );
+
+    this->toRender[this->seqId] = "RECIVE_TOKEN";
+    this->seqId++;
+
 }
 
 void MainWindow::RenderConversationList( QJsonArray array )
@@ -125,6 +148,11 @@ void MainWindow::ExecuteResponse( QByteArray data )
     if ( executionFunction == "RENDER_MESSAGES" )
     {
         this->RenderMessagesList( obj["response"].toArray() );
+    }
+
+    if ( executionFunction == "RECIVE_TOKEN" )
+    {
+        this->ReciveToken( obj["token"].toString() );
     }
 
 }

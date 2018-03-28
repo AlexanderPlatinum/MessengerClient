@@ -21,7 +21,7 @@ private:
     Ui::LoginForm *ui;
 
 signals:
-    void isAuthorize();
+    void isAuthorize( QString email, QString password );
 
 private slots:
     void HandleLoginButton ();

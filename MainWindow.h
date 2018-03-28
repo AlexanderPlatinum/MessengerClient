@@ -41,6 +41,8 @@ private:
     void RenderConversationList( QJsonArray array );
     void RenderMessagesList( QJsonArray array );
 
+    void ReciveToken( QString token );
+
 private slots:
      void SendMessageBtn ();
 
@@ -48,7 +50,7 @@ private slots:
      void DisconectFromHost();
      void ReadyReadInformation();
 
-     void ReadyToLogin();
+     void ReadyToLogin( QString email, QString password );
 
      void SelectConversation();
 
