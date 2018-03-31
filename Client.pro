@@ -11,14 +11,20 @@ SOURCES += \
         main.cpp \
         MainWindow.cpp \
         LoginForm.cpp \
-        Utilities.cpp
+        Utilities.cpp \
+    RegisterForm.cpp \
+    UsersForm.cpp
 
 HEADERS += \
         MainWindow.h \
         LoginForm.h \
         Utilities.h \
-    Types.h
+    Types.h \
+    RegisterForm.h \
+    UsersForm.h
 
 FORMS += \
         MainWindow.ui \
-        LoginForm.ui
+        LoginForm.ui \
+    RegisterForm.ui \
+    UsersForm.ui

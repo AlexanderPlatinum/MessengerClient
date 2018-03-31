@@ -22,9 +22,11 @@ private:
 
 signals:
     void isAuthorize( QString email, QString password );
+    void openRegisterForm();
 
 private slots:
     void HandleLoginButton ();
+    void HandleRegisterButton ();
 
 };
 

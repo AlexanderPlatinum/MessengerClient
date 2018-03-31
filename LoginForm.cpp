@@ -5,9 +5,10 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
 {
     ui->setupUi(this);
 
-    connect( ui->LoginButton, SIGNAL(clicked(bool)), this, SLOT(HandleLoginButton()) );
+    connect( ui->LoginButton, SIGNAL(clicked(bool)), this, SLOT( HandleLoginButton() ) );
+    connect( ui->RegisterButton, SIGNAL( clicked(bool)), this, SLOT( HandleRegisterButton() ) );
 
-    setWindowTitle( "Messanger Client | Вход" );
+    setWindowTitle( "Messenger Client | Вход" );
 }
 
 void LoginForm::HandleLoginButton()
@@ -35,6 +36,12 @@ void LoginForm::HandleLoginButton()
     emit this->isAuthorize( login, password );
     this->close();
 
+}
+
+void LoginForm::HandleRegisterButton()
+{
+    emit this->openRegisterForm();
+    this->close();
 }
 
 LoginForm::~LoginForm()
